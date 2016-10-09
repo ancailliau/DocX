@@ -1601,11 +1601,9 @@ namespace UnitTests
                 //Add A table                
                 Table t = document.AddTable(2, 3);
                 Table t1 = document.InsertTable(t);
-                t1.Design = TableDesign.None;
-                // requires FIX for .None/.Custom set in a row
-              //  t1.Design = TableDesign.None;
-              //  t1.Design = TableDesign.Custom;
-                t1.Design = TableDesign.Custom;
+                // TODO: requires FIX for .None/.Custom set in a row
+                //  t1.Design = TableDesign.None;
+                //  t1.Design = TableDesign.Custom;
                 t1.Design = TableDesign.ColorfulGrid;
                 t1.Design = TableDesign.ColorfulGrid;
                 t1.MergeCellsInColumn(1, 0, 1);
