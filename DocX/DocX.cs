@@ -349,7 +349,7 @@ namespace Novacode
 
             settings.Root.AddFirst(documentProtection);
         }
-
+#if DNX451
         public void AddProtection(EditRestrictions er, string strPassword)
         {
             // http://blogs.msdn.com/b/vsod/archive/2010/04/05/how-to-set-the-editing-restrictions-in-word-using-open-xml-sdk-2-0.aspx
@@ -487,7 +487,7 @@ namespace Novacode
 
             settings.Root.AddFirst(documentProtection);
         }
-
+#endif
         private byte[] concatByteArrays(byte[] array1, byte[] array2)
         {
             byte[] result = new byte[array1.Length + array2.Length];
@@ -1938,18 +1938,18 @@ namespace Novacode
             return new_pp;
         }
 
-        protected string GetMD5HashFromStream(Stream stream)
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] retVal = md5.ComputeHash(stream);
+        // protected string GetMD5HashFromStream(Stream stream)
+        // {
+        //     MD5 md5 = new MD5CryptoServiceProvider();
+        //     byte[] retVal = md5.ComputeHash(stream);
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < retVal.Length; i++)
-            {
-                sb.Append(retVal[i].ToString("x2"));
-            }
-            return sb.ToString();
-        }
+        //     StringBuilder sb = new StringBuilder();
+        //     for (int i = 0; i < retVal.Length; i++)
+        //     {
+        //         sb.Append(retVal[i].ToString("x2"));
+        //     }
+        //     return sb.ToString();
+        // }
 
         /// <summary>
         /// Insert a new Table at the end of this document.

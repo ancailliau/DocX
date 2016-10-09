@@ -6,7 +6,11 @@ using System.IO.Compression;
 using System.IO.Packaging;
 using System.Linq;
 using System.Reflection;
+#if DNX451
 using System.Security.Principal;
+#else
+using System.Security.Claims;
+#endif
 using System.Text;
 using System.Xml.Linq;
 using System.Xml;
@@ -17,6 +21,8 @@ namespace Novacode
     {
         public const string DOCUMENT_DOCUMENTTYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml";
         public const string TEMPLATE_DOCUMENTTYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml";
+
+        
 
             public static bool IsNullOrWhiteSpace(this string value)
             {
@@ -308,7 +314,7 @@ namespace Novacode
             XDocument document;
 
             // Get a reference to the executing assembly.
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = typeof(DocX).GetTypeInfo().Assembly;
 
             // Open a Stream to the embedded resource.
             Stream stream = assembly.GetManifestResourceStream(manifest_resource_name);
@@ -407,7 +413,11 @@ namespace Novacode
             (
                 new XElement(DocX.w + t.ToString(),
                     new XAttribute(DocX.w + "id", 0),
+#if DNX451
                     new XAttribute(DocX.w + "author", WindowsIdentity.GetCurrent().Name),
+#else
+                    new XAttribute(DocX.w + "author", ClaimsPrincipal.Current),
+#endif
                     new XAttribute(DocX.w + "date", edit_time),
                 content)
             );

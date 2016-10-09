@@ -71,11 +71,13 @@ namespace Novacode
             this.stream.Flush();
             Mutex.ReleaseMutex();
         }
+#if DNX451
 
         public override void Close()
         {
             this.stream.Close();
         }
+#endif
 
         protected override void Dispose(bool disposing)
         {

@@ -6,7 +6,11 @@ using System.Xml.Linq;
 using System.Collections;
 using System.IO.Packaging;
 using System.Globalization;
+#if DNX451
 using System.Security.Principal;
+#else
+using System.Security.Claims;
+#endif
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -1686,11 +1690,13 @@ namespace Novacode
 
             int cx, cy;
 
-            using (System.Drawing.Image img = System.Drawing.Image.FromStream(new PackagePartStream(part.GetStream())))
-            {
-                cx = img.Width * 9526;
-                cy = img.Height * 9526;
-            }
+            var bmp = Splat.BitmapLoader.Current.Load(new PackagePartStream(part.GetStream()), null, null).Result;
+
+            //using (System.Drawing.Image img = System.Drawing.Image.FromStream(new PackagePartStream(part.GetStream())))
+            //{
+                cx = Convert.ToInt32( bmp.Width * 9526);
+                cy = Convert.ToInt32(bmp.Height * 9526);
+            //}
 
             XElement e = new XElement(DocX.w + "drawing");
 
@@ -1773,7 +1779,11 @@ namespace Novacode
             (
                 new XElement(DocX.w + t.ToString(),
                     new XAttribute(DocX.w + "id", 0),
+#if DNX451
                     new XAttribute(DocX.w + "author", WindowsIdentity.GetCurrent().Name),
+#else
+                    new XAttribute(DocX.w + "author", ClaimsPrincipal.Current),
+#endif
                     new XAttribute(DocX.w + "date", edit_time),
                 content)
             );
